@@ -1,0 +1,34 @@
+!!! XML
+!!!
+%html
+  %head
+    %title Radio
+    %link{ :href => "/css/bootstrap.css", :rel => "stylesheet", :media => "screen" }
+    %link{ :href => "/css/style.css", :rel => "stylesheet", :media => "screen" }
+  %body
+    %div{ :class => ['navbar', 'navbar-inverse', 'navbar-fixed-top'] }
+      .navbar-inner
+        .container-fluid
+          %a.brand{ :href => '#' } Radio
+          .nav-collapse.collapse
+            %p{ :class => ['navbar-text', 'pull-right'] } 
+              = user.name
+              %a{ :href => "/logout" }
+                %i.icon-off
+            %ul.nav
+              %li{ :class => cur == 'list' ? 'active' : '' } 
+                %a{ :href => '/devices/list' } Home
+              %li{ :class => cur == 'pair' ? 'active' : '' } 
+                %a{ :href => '/devices/pair' } Pair
+    .container-fluid
+      .row-fluid
+        .span3
+          %div{ :class => ['well', 'sidebar-nav'] }
+            %ul{ :class => ['nav', 'sidebar-nav'] }
+              %li.nav-header 
+                #{user.name} devices
+              - devices.each do |d|
+                %li{ :class => did.to_s == d[:id] ? 'active' : '' }
+                  %a{ :href => "/devices/show/#{d[:id]}" } d[:id]
+        .span9
+          = yield

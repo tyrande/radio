@@ -1,0 +1,13 @@
+%table{ :class => ['table', 'table-striped'] }
+  %thead
+    %tr
+      %th ID
+      %th Attr
+  %tbody
+    - devices.each do |d|
+      %tr
+        %td
+          = d[:id]
+        %td
+          = d[:attr]
+

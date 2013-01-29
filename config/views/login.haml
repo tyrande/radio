@@ -1,0 +1,19 @@
+!!! XML
+!!!
+%html
+  %head
+    %title Radio
+    %link{ :href => "/css/bootstrap.css", :rel => "stylesheet", :media => "screen" }
+    %link{ :href => "/css/style.css", :rel => "stylesheet", :media => "screen" }
+  %body
+    %div{ :class => ['navbar', 'navbar-inverse', 'navbar-fixed-top'] }
+      .navbar-inner
+        .container-fluid
+          %a.brand{ :href => '#' } Radio
+    .container-fluid
+      .row-fluid
+        %form.form-signin{ :action => "/users", :method => "POST" }
+          %h2.form-signin-heading Please sign in
+          %input.input-block-level{ :type => 'text', :name => 'name', :placeholder => "Name"}
+          %input.input-block-level{ :type => 'password', :name => 'password', :placeholder => "Password" }
+          %button{ :class => ['btn', 'btn-large', 'btn-primary'], :type => 'submit' } Sign in

@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby  
+require 'rubygems'   
+require 'irb'  
+require 'irb/completion'
+require 'config/application'
+
+puts "Loading radio server (Radio 1.0.0)"
+IRB.start  
