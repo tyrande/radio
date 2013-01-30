@@ -38,6 +38,12 @@ class Radio < Sinatra::Base
     cookies[:_token] = Digest::SHA1.hexdigest("radio#{Time.now.to_i}session") unless cookies[:_token]
   end
 
+  get '/' do
+    u = User.find_by_token(cookies[:_token])
+    redirect to('/login') unless u
+    haml :devices, :locals => { :devices => u.devices, :user => u, :cur => 'list' }
+  end
+
   get '/login' do
     u = User.find_by_token(cookies[:_token])
     redirect to('/devices/list') if u
@@ -66,7 +72,7 @@ class Radio < Sinatra::Base
     u = User.find_by_token(cookies[:_token])
     redirect to('/login') unless u
     _pid = get_pair(u)
-    haml :pair, :locals => { :devices => u.devices, :user => u, :cur => 'pair', :pair_id => _pid, }
+    haml :pair, :locals => { :devices => u.devices, :user => u, :cur => 'pair', :pair_id => "pair:#{_pid.length}$#{_pid}" }
   end
   
   get '/devices/show/:id' do
