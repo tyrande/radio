@@ -30,7 +30,8 @@ class Radio < Sinatra::Base
       end
     end
     
-    set :protection, :except => :frame_options
+    #set :protection, :except => :frame_options
+    disable :protection
     set :haml, {:format => :html5 }
   end
   
@@ -41,7 +42,7 @@ class Radio < Sinatra::Base
   get '/' do
     u = User.find_by_token(cookies[:_token])
     redirect to('/login') unless u
-    haml :devices, :locals => { :devices => u.devices, :user => u, :cur => 'list' }
+    haml :devices, :locals => { :devices => u.devices, :user => u, :cur => 'list', :did => "" }
   end
 
   get '/login' do
@@ -51,7 +52,7 @@ class Radio < Sinatra::Base
   end
 
   post '/users' do
-    u = User.find_by_name(params[:name])
+    u = User.find_by_name(params[:name].strip.downcase)
     redirect to('/login') unless u and u.auth(params[:password])
     Redis.current.setex("radio:sessions:#{cookies[:_token]}", 604800, u.id)
     redirect to('/devices/list')
@@ -65,14 +66,14 @@ class Radio < Sinatra::Base
   get '/devices/list' do
     u = User.find_by_token(cookies[:_token])
     redirect to('/login') unless u
-    haml :devices, :locals => { :devices => u.devices, :user => u, :cur => 'list' }
+    haml :devices, :locals => { :devices => u.devices, :user => u, :cur => 'list', :did => "" }
   end
   
   get '/devices/pair' do
     u = User.find_by_token(cookies[:_token])
     redirect to('/login') unless u
     _pid = get_pair(u)
-    haml :pair, :locals => { :devices => u.devices, :user => u, :cur => 'pair', :pair_id => "pair:#{_pid.length}$#{_pid}" }
+    haml :pair, :locals => { :devices => u.devices, :user => u, :cur => 'pair', :did => "", :pair_id => "pair:#{_pid.length}$#{_pid}" }
   end
   
   get '/devices/show/:id' do
@@ -95,7 +96,7 @@ class Radio < Sinatra::Base
   post '/devices/create_pair/:id' do
     u = User.find(params[:pair_key][6..-1])
     if params[:pair_key] == get_pair(u)
-      Redis.current.sadd "radio:#{_uid}:devices", params[:id]
+      Redis.current.sadd "radio:#{u.id}:devices", params[:id]
       Redis.current.set "radio:devices:#{params[:id]}", { :status => 0 }.to_json
       [200, 'ok']
     else

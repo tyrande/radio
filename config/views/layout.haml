@@ -3,23 +3,23 @@
 %html
   %head
     %title Radio
+    %meta{ :name => "viewport", :content => "width=device-width, initial-scale=1.0" }
     %link{ :href => "/css/bootstrap.css", :rel => "stylesheet", :media => "screen" }
+    %link{ :href => "/css/bootstrap-responsive.css", :rel => "stylesheet", :media => "screen" }
     %link{ :href => "/css/style.css", :rel => "stylesheet", :media => "screen" }
   %body
-    %div{ :class => ['navbar', 'navbar-inverse', 'navbar-fixed-top'] }
+    %div{ :class => ['navbar', 'navbar-inverse', 'navbar-fixed-top'], :style => 'position:relative;margin-bottom:20px;' }
       .navbar-inner
         .container-fluid
           %a.brand{ :href => '#' } Radio
-          .nav-collapse.collapse
-            %p{ :class => ['navbar-text', 'pull-right'] } 
-              = user.name
-              %a{ :href => "/logout" }
-                %i.icon-off
-            %ul.nav
-              %li{ :class => cur == 'list' ? 'active' : '' } 
-                %a{ :href => '/devices/list' } Home
-              %li{ :class => cur == 'pair' ? 'active' : '' } 
-                %a{ :href => '/devices/pair' } Pair
+          %a{ :class => ['btn', 'btn-inverse', 'pull-right'], :href => "/logout" }
+            %i.icon-off{ :class => 'icon-white' }
+          %span{ :class => ['navbar-text', 'pull-right'], :style => 'margin-right:5px;' } #{user.name}
+          %ul.nav
+            %li{ :class => cur == 'list' ? 'active' : '' } 
+              %a{ :href => '/devices/list' } Home
+            %li{ :class => cur == 'pair' ? 'active' : '' } 
+              %a{ :href => '/devices/pair' } Pair
     .container-fluid
       .row-fluid
         .span3
@@ -29,6 +29,6 @@
                 #{user.name} devices
               - devices.each do |d|
                 %li{ :class => did.to_s == d[:id] ? 'active' : '' }
-                  %a{ :href => "/devices/show/#{d[:id]}" } d[:id]
+                  %a{ :href => "/devices/show/#{d[:id]}" } #{d[:id]}
         .span9
           = yield
