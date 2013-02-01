@@ -22,6 +22,8 @@
               %a{ :href => '/devices/pair' } Pair
     .container-fluid
       .row-fluid
+        .span9
+          = yield
         .span3
           %div{ :class => ['well', 'sidebar-nav'] }
             %ul{ :class => ['nav', 'sidebar-nav'] }
@@ -30,5 +32,3 @@
               - devices.each do |d|
                 %li{ :class => did.to_s == d[:id] ? 'active' : '' }
                   %a{ :href => "/devices/show/#{d[:id]}" } #{d[:id]}
-        .span9
-          = yield
